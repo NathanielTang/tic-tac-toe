@@ -3,7 +3,7 @@ const gameboard = (()=>{
         //nine objects, with Status: X, O, or empty
         //then the other functions will manipulate the objects within gameboardArray to change the Status property
     let gameboardSpace = document.querySelector('#gameboardSpace')
-    const createGameboard = () => {
+    const _createGameboard = () => {
         gameboardArray.forEach(element => {
             let gameboardSquare = document.createElement('div');
             gameboardSquare.textContent = "X";
@@ -11,11 +11,15 @@ const gameboard = (()=>{
             gameboardSpace.appendChild(gameboardSquare)
         }); 
     } 
-    return {createGameboard}
+
+
+    const render = () => {
+        _createGameboard()
+    }
+    return {render} //don't return createGameboard
 })();
 
 const gameFlow = (() => {
-
 })();
 
 const player = (name) => {
@@ -39,4 +43,6 @@ const addPlayer = () => {
     player(name)
 }
 
-console.log('hello world')
+function test() {
+    gameboard.render();
+}
