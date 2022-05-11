@@ -1,0 +1,14 @@
+#gameboardSpace {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.gameboard {
+    border: 1px solid black;
+    padding: 25px;
+}
