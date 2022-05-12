@@ -9,7 +9,6 @@ const gameboard = (() => {
       {status: "empty"},
       {status: "empty"},
       {status: "empty"},
-
   ];
 
  
@@ -37,47 +36,75 @@ const gameboard = (() => {
   const markSpace = function markSpace() {
     //where mark is X or O;
     let index = this.dataset.index;
-    console.log("a" + this.dataset.index);
     mark = "X";
+
+    if (gameboardArray[index].status != "empty") return;
+
+    console.log("a" + this.dataset.index);
+
     if (mark === "X") {
       gameboardArray[index].status = "X";
     } else if (mark === "O") {
       gameboardArray[index].status = "O";
     }
     render();
-    console.log(this);
+    //gameFlow.changeTurn();
+    
   };
   const render = () => {
     _createGameboard();
   };
-  return {render, markSpace}; //don't return createGameboard
+  
+  return {render, markSpace};
 })();
 
 gameboard.render();
 
-const gameFlow = (() => {})();
+const gameFlow = (() => {
+    //make a function to assign X or O to player 1 or 2.
 
-const player = (name) => {
-  const sayName = () => {
-    console.log(name);
-  };
+    const changeTurn = () => {
+
+    }
+})();
+
+const Player = (name, mark) => {
   return {
     name,
-    sayName,
+    mark,
   };
 };
 
-const addPlayer = () => {
-  //add name from HTML and assign X or O
-  //get DOM
-  let getName = document.querySelector("#playerName");
-  let name = getName.textContent;
+const addPlayer = (() => {
+ 
+  let nameInput = document.querySelector("#playerName");
+  let getName = nameInput.value;
+   let addPlayerButton = document.querySelector('#addPlayer')
+    addPlayerButton.addEventListener('click', bad)
+    addPlayerButton.addEventListener('click', add)
+    
 
-  console.log(name);
-
-  player(name);
+    function bad() {
+        nameInput.textContent = "";
+        console.log('i suck');
+        console.log(getName)
+    }
+    
+  console.log('i suk')
+  function add() {
+      console.log("IT WORKS")
+      getName
+      //some logic to decide player 1 or 2, then IF ...
+        let player1;
+        let player2;
+      if (player1 === false) {
+          player1 = Player(getName, "X")
+    } if (player1 === true) {
+        player2 = Player(getName, "O")
+    }
+return{
+        add 
+    }
+   
 };
-
-const test = function test() {
-  gameboard.render();
-};
+})();
