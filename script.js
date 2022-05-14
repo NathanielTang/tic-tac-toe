@@ -32,6 +32,14 @@ const gameboard = (() => {
     });
   };
 
+  const clearGameboard = () => {
+      for (i=0; i<9;i++) {
+          gameboardArray[i].status = "empty"
+      };
+      _createGameboard();
+      return;
+  }
+
   const markSpace = function markSpace() {
     //where mark is X or O;
     let index = this.dataset.index;
@@ -53,7 +61,7 @@ const gameboard = (() => {
     _createGameboard();
   };
 
-  return { render, markSpace };
+  return { render, markSpace , clearGameboard };
 })();
 
 gameboard.render();
@@ -73,9 +81,14 @@ const gameFlow = (() => {
     }
   };
 
+  
 const newGame = () => {
     turn = 0;
+    gameboard.clearGameboard();   
 }
+
+const newGameButton = document.querySelector('#newGame');
+newGameButton.addEventListener('click', newGame)
 
   return {
       changeTurn,
