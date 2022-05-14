@@ -1,17 +1,16 @@
 const gameboard = (() => {
   let gameboardArray = [
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
-      {status: "empty"},
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
+    { status: "empty" },
   ];
 
- 
   let gameboardSpace = document.querySelector("#gameboardSpace");
   const _createGameboard = () => {
     gameboardSpace.innerHTML = "";
@@ -36,7 +35,7 @@ const gameboard = (() => {
   const markSpace = function markSpace() {
     //where mark is X or O;
     let index = this.dataset.index;
-    mark = "X";
+    let mark = gameFlow.changeTurn();
 
     if (gameboardArray[index].status != "empty") return;
 
@@ -49,23 +48,39 @@ const gameboard = (() => {
     }
     render();
     //gameFlow.changeTurn();
-    
   };
   const render = () => {
     _createGameboard();
   };
-  
-  return {render, markSpace};
+
+  return { render, markSpace };
 })();
 
 gameboard.render();
 
 const gameFlow = (() => {
-    //make a function to assign X or O to player 1 or 2.
+  //make a function to assign X or O to player 1 or 2.
+  let turn  = 1;
 
-    const changeTurn = () => {
 
+  const changeTurn = () => {
+    if (turn % 2 === 0) {
+        turn++;
+        return "O";
+    } else {
+        turn++;
+        return "X";
     }
+  };
+
+const newGame = () => {
+    turn = 0;
+}
+
+  return {
+      changeTurn,
+      newGame,
+  }
 })();
 
 const Player = (name, mark) => {
@@ -76,35 +91,15 @@ const Player = (name, mark) => {
 };
 
 const addPlayer = (() => {
- 
   let nameInput = document.querySelector("#playerName");
-  let getName = nameInput.value;
-   let addPlayerButton = document.querySelector('#addPlayer')
-    addPlayerButton.addEventListener('click', bad)
-    addPlayerButton.addEventListener('click', add)
-    
+  let getName = nameInput.value; //error here
+  let addPlayerButton = document.querySelector("#addPlayer");
+  addPlayerButton.addEventListener("click", _add);
 
-    function bad() {
-        nameInput.textContent = "";
-        console.log('i suck');
-        console.log(getName)
-    }
+
+  function _add() {
+    nameInput.value = "";
+    console.log("11" + getName)
     
-  console.log('i suk')
-  function add() {
-      console.log("IT WORKS")
-      getName
-      //some logic to decide player 1 or 2, then IF ...
-        let player1;
-        let player2;
-      if (player1 === false) {
-          player1 = Player(getName, "X")
-    } if (player1 === true) {
-        player2 = Player(getName, "O")
-    }
-return{
-        add 
-    }
-   
-};
+  }
 })();
