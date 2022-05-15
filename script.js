@@ -43,11 +43,10 @@ const gameboard = (() => {
   const markSpace = function markSpace() {
     //where mark is X or O;
     let index = this.dataset.index;
-    let mark = gameFlow.changeTurn();
-
+    
     if (gameboardArray[index].status != "empty") return;
 
-    console.log("a" + this.dataset.index);
+    let mark = gameFlow.changeTurn();
 
     if (mark === "X") {
       gameboardArray[index].status = "X";
@@ -57,10 +56,12 @@ const gameboard = (() => {
     render();
     _checkWin();
   };
+
   const render = () => {
     _createGameboard();
   };
 
+  let gameStatus = "tie";
   const checkGameStatus = (s1, s2, s3) => {
     //Parameters are the characters of square 1, 2, and 3, respectively.
     let mark1 = gameboardArray[s1].status;
@@ -71,18 +72,24 @@ const gameboard = (() => {
         return
     }
     else if (mark1 === mark2 && mark2 === mark3) {
-        return console.log(`${mark1} wins!`)
+        console.log(`${mark1} wins!`);
+        return gameStatus = `${mark1} win`
     }
+    
   }
 
   const _checkWin = () => {
     checkGameStatus(0,1,2);
-    /*checkGameStatus(0,3,6);
+    checkGameStatus(0,3,6);
     checkGameStatus(0,4,8);
     checkGameStatus(1,4,7);
-    checkGameStatus(2,4,6); */
-
-
+    checkGameStatus(2,4,6);
+    checkGameStatus(3,4,5);
+    checkGameStatus(2,5,8);
+    checkGameStatus(6,7,8);
+    if (gameFlow.checkTurnNine() === "nine") {
+        console.log('tie');
+    }
   }
   
   return { render, markSpace, clearGameboard };
@@ -95,6 +102,7 @@ const gameFlow = (() => {
   let turn = 1;
 
   const changeTurn = () => {
+      console.log(turn)
     if (turn % 2 === 0) {
       turn++;
       return "O";
@@ -104,6 +112,11 @@ const gameFlow = (() => {
     }
   };
 
+  const checkTurnNine = () => {
+    if (turn === 10) {
+        return "nine"
+    } return false
+  }
   const _newGame = () => {
     turn = 0;
     gameboard.clearGameboard();
@@ -116,6 +129,7 @@ const gameFlow = (() => {
 
   return {
     changeTurn,
+    checkTurnNine,
   };
 })();
 
