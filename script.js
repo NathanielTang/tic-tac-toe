@@ -62,17 +62,22 @@ const gameboard = (() => {
   };
 
   let gameStatus = "tie";
+
   const checkGameStatus = (s1, s2, s3) => {
     //Parameters are the characters of square 1, 2, and 3, respectively.
     let mark1 = gameboardArray[s1].status;
     let mark2 = gameboardArray[s2].status;
     let mark3 = gameboardArray[s3].status;
-    console.log(mark1 + " " + mark2 + " " + mark3)
+    
     if (mark1 === "empty" || mark2 === "empty" || mark3 === "empty") {
         return
     }
     else if (mark1 === mark2 && mark2 === mark3) {
-        console.log(`${mark1} wins!`);
+        console.log(`${mark1} wins!`);for (i = 0; i < 9; i++) {
+            if (gameboardArray[i].status = "empty") {
+            gameboardArray[i].status = i;
+        }
+          }
         return gameStatus = `${mark1} win`
     }
     
@@ -100,6 +105,8 @@ gameboard.render();
 const gameFlow = (() => {
   //make a function to assign X or O to player 1 or 2.
   let turn = 1;
+  let playerXwins = 0;
+  let playerOwins = 0;
 
   const changeTurn = () => {
       console.log(turn)
