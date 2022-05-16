@@ -43,7 +43,7 @@ const gameboard = (() => {
   const markSpace = function markSpace() {
     //where mark is X or O;
     let index = this.dataset.index;
-    
+
     if (gameboardArray[index].status != "empty") return;
 
     let mark = gameFlow.changeTurn();
@@ -68,35 +68,34 @@ const gameboard = (() => {
     let mark1 = gameboardArray[s1].status;
     let mark2 = gameboardArray[s2].status;
     let mark3 = gameboardArray[s3].status;
-    
+
     if (mark1 === "empty" || mark2 === "empty" || mark3 === "empty") {
-        return
-    }
-    else if (mark1 === mark2 && mark2 === mark3) {
-        console.log(`${mark1} wins!`);for (i = 0; i < 9; i++) {
-            if (gameboardArray[i].status = "empty") {
-            gameboardArray[i].status = i;
+      return;
+    } else if (mark1 === mark2 && mark2 === mark3) {
+      console.log(`${mark1} wins!`);
+      for (i = 0; i < 9; i++) {
+        if ((gameboardArray[i].status = "empty")) {
+          gameboardArray[i].status = i;
         }
-          }
-        return gameStatus = `${mark1} win`
+      }
+      return (gameStatus = `${mark1} win`);
     }
-    
-  }
+  };
 
   const _checkWin = () => {
-    checkGameStatus(0,1,2);
-    checkGameStatus(0,3,6);
-    checkGameStatus(0,4,8);
-    checkGameStatus(1,4,7);
-    checkGameStatus(2,4,6);
-    checkGameStatus(3,4,5);
-    checkGameStatus(2,5,8);
-    checkGameStatus(6,7,8);
+    checkGameStatus(0, 1, 2);
+    checkGameStatus(0, 3, 6);
+    checkGameStatus(0, 4, 8);
+    checkGameStatus(1, 4, 7);
+    checkGameStatus(2, 4, 6);
+    checkGameStatus(3, 4, 5);
+    checkGameStatus(2, 5, 8);
+    checkGameStatus(6, 7, 8);
     if (gameFlow.checkTurnNine() === "nine") {
-        console.log('tie');
+      console.log("tie");
     }
-  }
-  
+  };
+
   return { render, markSpace, clearGameboard };
 })();
 
@@ -109,7 +108,7 @@ const gameFlow = (() => {
   let playerOwins = 0;
 
   const changeTurn = () => {
-      console.log(turn)
+    console.log(turn);
     if (turn % 2 === 0) {
       turn++;
       return "O";
@@ -121,9 +120,10 @@ const gameFlow = (() => {
 
   const checkTurnNine = () => {
     if (turn === 10) {
-        return "nine"
-    } return false
-  }
+      return "nine";
+    }
+    return false;
+  };
   const _newGame = () => {
     turn = 0;
     gameboard.clearGameboard();
@@ -131,8 +131,6 @@ const gameFlow = (() => {
 
   const newGameButton = document.querySelector("#newGame");
   newGameButton.addEventListener("click", _newGame);
-
-  
 
   return {
     changeTurn,
@@ -148,13 +146,45 @@ const Player = (name, mark) => {
 };
 
 const addPlayer = (() => {
-  let nameInput = document.querySelector("#playerName");
-  let getName = nameInput.value; //error here
+  let nameInput = document.getElementById("playerName");
+
   let addPlayerButton = document.querySelector("#addPlayer");
   addPlayerButton.addEventListener("click", _add);
 
+  const playerDiv = document.querySelector("#players");
+  let player1 = "";
+  let player2 = "";
+
   function _add() {
+    let getName = nameInput.value;
+    if (player2 != "") return;
+    if (player1 === "") {
+      player1 = Player(getName, "X");
+      _createPlayerCard(player1, "Player 1: ");
+    } else {
+      player2 = Player(getName, "O");
+      _createPlayerCard(player2, "Player 2: ");
+    }
+
+    function _createPlayerCard(player, string) {
+      let playerCard = document.createElement("div");
+      playerDiv.appendChild(playerCard);
+      let playerName = document.createElement("p");
+      playerName.textContent = string + player.name;
+      let playerMark = document.createElement("p");
+      playerMark.textContent = "Playing as " + player.mark;
+
+      playerCard.appendChild(playerName);
+      playerCard.appendChild(playerMark);
+    }
+    const _newPlayers = () => {
+      player1 = "";
+      player2 = "";
+      playerDiv.innerHTML = "";
+    };
+    const newPlayersButton = document.getElementById("newPlayers");
+    newPlayersButton.addEventListener("click", _newPlayers);
+
     nameInput.value = "";
-    console.log("11" + getName);
   }
 })();
