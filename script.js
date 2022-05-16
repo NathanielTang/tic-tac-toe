@@ -132,6 +132,14 @@ const gameFlow = (() => {
   const newGameButton = document.querySelector("#newGame");
   newGameButton.addEventListener("click", _newGame);
 
+  const addWin = (mark) => {
+    if ((mark = "X")) {
+      playerXwins++;
+    }
+    if ((mark = "O")) {
+      playerOwins++;
+    }
+  };
   return {
     changeTurn,
     checkTurnNine,
@@ -165,26 +173,53 @@ const addPlayer = (() => {
       player2 = Player(getName, "O");
       _createPlayerCard(player2, "Player 2: ");
     }
+  nameInput.value = "";
 
-    function _createPlayerCard(player, string) {
-      let playerCard = document.createElement("div");
-      playerDiv.appendChild(playerCard);
-      let playerName = document.createElement("p");
-      playerName.textContent = string + player.name;
-      let playerMark = document.createElement("p");
-      playerMark.textContent = "Playing as " + player.mark;
-
-      playerCard.appendChild(playerName);
-      playerCard.appendChild(playerMark);
-    }
-    const _newPlayers = () => {
-      player1 = "";
-      player2 = "";
-      playerDiv.innerHTML = "";
-    };
-    const newPlayersButton = document.getElementById("newPlayers");
-    newPlayersButton.addEventListener("click", _newPlayers);
-
-    nameInput.value = "";
   }
+
+  function _createPlayerCard(player, string) {
+    let playerCard = document.createElement("div");
+    playerDiv.appendChild(playerCard);
+    let playerName = document.createElement("p");
+    playerName.textContent = string + player.name;
+    let playerMark = document.createElement("p");
+    playerMark.textContent = "Playing as " + player.mark;
+
+    playerCard.appendChild(playerName);
+    playerCard.appendChild(playerMark);
+  }
+
+  const _newPlayers = () => {
+    player1 = "";
+    player2 = "";
+    playerDiv.innerHTML = "";
+  };
+
+  const changePosition = () => {
+    if (player1 === "" || player2 === "") return;
+    
+    console.log("aaa" + player1.mark);
+
+    if (player1.mark === "X") {
+      player1.mark = "O";
+      player2.mark = "X";
+    } else if (player1.mark === "O") {
+      player1.mark = "X";
+      player2.mark = "O";
+    }
+
+    playerDiv.innerHTML = "";
+
+    _createPlayerCard(player1, "Player 1: ");
+
+    _createPlayerCard(player2, "Player 2: ");
+  };
+
+  const newPlayersButton = document.getElementById("newPlayers");
+  newPlayersButton.addEventListener("click", _newPlayers);
+
+  const changePositionButton = document.getElementById("changePosition");
+  changePositionButton.addEventListener("click", changePosition);
+
+  nameInput.value = "";
 })();
