@@ -41,7 +41,6 @@ const gameboard = (() => {
   };
 
   const markSpace = function markSpace() {
-    //where mark is X or O;
     let index = this.dataset.index;
 
     if (gameboardArray[index].status != "empty") return;
@@ -62,7 +61,9 @@ const gameboard = (() => {
     _createGameboard();
   };
 
-  let gameStatus = "tie";
+  
+  
+  let gameTie = "";
 
   const checkGameStatus = (s1, s2, s3) => {
     //Parameters are the characters of square 1, 2, and 3, respectively.
@@ -73,16 +74,20 @@ const gameboard = (() => {
     if (mark1 === "empty" || mark2 === "empty" || mark3 === "empty") {
       return;
     } else if (mark1 === mark2 && mark2 === mark3) {
+        //add win
       console.log(`${mark1} wins!`);
+      addPlayer.displayWin(mark1);
+
       for (i = 0; i < 9; i++) {
         if ((gameboardArray[i].status = "empty")) {
           gameboardArray[i].status = i;
         }
       }
-      return (gameStatus = `${mark1} win`);
+      return (`${mark1} win`);
     }
   };
 
+  
   const _checkWin = () => {
     checkGameStatus(0, 1, 2);
     checkGameStatus(0, 3, 6);
@@ -94,10 +99,13 @@ const gameboard = (() => {
     checkGameStatus(6, 7, 8);
     if (gameFlow.checkTurnNine() === "nine") {
       console.log("tie");
+      addPlayer.displayWin('tie');
     }
   };
-
-  return { render, markSpace, clearGameboard };
+  const checkTie = () => {
+      return gameTie;
+  }
+  return { render, markSpace, clearGameboard , checkGameStatus , checkTie};
 })();
 
 gameboard.render();
@@ -130,8 +138,12 @@ const gameFlow = (() => {
     }
     return false;
   };
+
+  const displayWinner = document.getElementById('displayWinner');
+
   const _newGame = () => {
-    turn = 0;
+    turn = 1;
+    displayWinner.textContent = "";
     gameboard.clearGameboard();
   };
 
@@ -226,7 +238,7 @@ const addPlayer = (() => {
   };
 
   const displayTurnDiv = document.getElementById("displayTurn")
-  const displayTurnCard = document.getElementById("displayTurnCard")
+  
   const displayTurn = () => {
     let turn = "";
     if (gameFlow.checkTurn() % 2 === 0) {
@@ -234,9 +246,15 @@ const addPlayer = (() => {
       } else {
         turn = "X";
       }
-      //if players exist then use names
-      //if no players just use symbol
 
+      if (player1 === "") {
+        displayTurnDiv.textContent = turn + "'s turn";
+        return
+      }
+      if (player2 === "") {
+        displayTurnDiv.textContent = turn + "'s turn";
+        return
+      }
       if (turn === "X") {
           if (player1.mark === "X") {
             displayTurnDiv.textContent = player1.name + "'s turn";
@@ -255,7 +273,36 @@ const addPlayer = (() => {
       }
       
   }
+  const displayWinner = document.getElementById('displayWinner');
 
+  const displayWin = (string) => {
+      if (string === "tie") {
+          displayWinner.textContent = "It's a tie!"
+      }
+      if (string === "X") {
+          if (player1.mark === "X") {
+        displayWinner.textContent = player1.name + " wins!"
+        return
+          }
+          if (player2.mark === "X") {
+            displayWinner.textContent = player2.name + " wins!"
+            return
+          }
+        displayWinner.textContent = "X wins!"
+      }
+      if (string === "O") {
+        if (player1.mark === "O") {
+            displayWinner.textContent = player1.name + " wins!"
+            return
+              }
+              if (player2.mark === "O") {
+                displayWinner.textContent = player2.name + " wins!"
+                return
+              }
+        displayWinner.textContent = "O wins!"
+      }
+      return;
+  }
   displayTurn();
   const newPlayersButton = document.getElementById("newPlayers");
   newPlayersButton.addEventListener("click", _newPlayers);
@@ -267,5 +314,6 @@ const addPlayer = (() => {
 
   return {
       displayTurn,
+      displayWin,
   }
 })();
