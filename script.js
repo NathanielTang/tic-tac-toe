@@ -165,10 +165,12 @@ const gameFlow = (() => {
   };
 })();
 
-const Player = (name, mark) => {
+const Player = (name, mark, wins) => {
+    
   return {
     name,
     mark,
+    wins,
   };
 };
 
@@ -182,15 +184,16 @@ const addPlayer = (() => {
   let player1 = "";
   let player2 = "";
 
+
   function _add() {
     let getName = nameInput.value;
     if (player2 != "") return;
     if (player1 === "") {
-      player1 = Player(getName, "X");
+      player1 = Player(getName, "X", 0);
       _createPlayerCard(player1, "Player 1: ");
       displayTurn();
     } else {
-      player2 = Player(getName, "O");
+      player2 = Player(getName, "O", 0);
       _createPlayerCard(player2, "Player 2: ");
       displayTurn();
 
@@ -200,15 +203,19 @@ const addPlayer = (() => {
   }
 
   function _createPlayerCard(player, string) {
+     
     let playerCard = document.createElement("div");
     playerDiv.appendChild(playerCard);
     let playerName = document.createElement("p");
     playerName.textContent = string + player.name;
     let playerMark = document.createElement("p");
     playerMark.textContent = "Playing as " + player.mark;
+    let playerWins = document.createElement("p");
+    playerWins.textContent = player.wins;
 
     playerCard.appendChild(playerName);
     playerCard.appendChild(playerMark);
+    playerCard.appendChild(playerWins);
   }
 
   const _newPlayers = () => {
@@ -278,14 +285,26 @@ const addPlayer = (() => {
   const displayWin = (string) => {
       if (string === "tie") {
           displayWinner.textContent = "It's a tie!"
+          
       }
       if (string === "X") {
           if (player1.mark === "X") {
         displayWinner.textContent = player1.name + " wins!"
+        player1.wins++;
+        playerDiv.innerHTML = "";
+      _createPlayerCard(player1, "Player 1: ");
+      _createPlayerCard(player2, "Player 2: ");
+
+
         return
           }
           if (player2.mark === "X") {
             displayWinner.textContent = player2.name + " wins!"
+        player2.wins++;
+        playerDiv.innerHTML = "";
+        _createPlayerCard(player1, "Player 1: ");
+      _createPlayerCard(player2, "Player 2: ");
+
             return
           }
         displayWinner.textContent = "X wins!"
@@ -293,10 +312,20 @@ const addPlayer = (() => {
       if (string === "O") {
         if (player1.mark === "O") {
             displayWinner.textContent = player1.name + " wins!"
+        player1.wins++;
+        playerDiv.innerHTML = "";
+        _createPlayerCard(player1, "Player 1: ");
+        _createPlayerCard(player2, "Player 2: ");
+
             return
               }
               if (player2.mark === "O") {
                 displayWinner.textContent = player2.name + " wins!"
+        player2.wins++;
+        playerDiv.innerHTML = "";
+        _createPlayerCard(player1, "Player 1: ");
+      _createPlayerCard(player2, "Player 2: ");
+
                 return
               }
         displayWinner.textContent = "O wins!"
