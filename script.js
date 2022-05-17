@@ -54,6 +54,7 @@ const gameboard = (() => {
       gameboardArray[index].status = "O";
     }
     render();
+    addPlayer.displayTurn();
     _checkWin();
   };
 
@@ -101,6 +102,7 @@ const gameboard = (() => {
 
 gameboard.render();
 
+
 const gameFlow = (() => {
   //make a function to assign X or O to player 1 or 2.
   let turn = 1;
@@ -108,7 +110,7 @@ const gameFlow = (() => {
   let playerOwins = 0;
 
   const changeTurn = () => {
-    console.log(turn);
+    
     if (turn % 2 === 0) {
       turn++;
       return "O";
@@ -117,6 +119,10 @@ const gameFlow = (() => {
       return "X";
     }
   };
+
+  const checkTurn = () => {
+      return turn;
+  }
 
   const checkTurnNine = () => {
     if (turn === 10) {
@@ -143,6 +149,7 @@ const gameFlow = (() => {
   return {
     changeTurn,
     checkTurnNine,
+    checkTurn,
   };
 })();
 
@@ -169,9 +176,12 @@ const addPlayer = (() => {
     if (player1 === "") {
       player1 = Player(getName, "X");
       _createPlayerCard(player1, "Player 1: ");
+      displayTurn();
     } else {
       player2 = Player(getName, "O");
       _createPlayerCard(player2, "Player 2: ");
+      displayTurn();
+
     }
   nameInput.value = "";
 
@@ -215,6 +225,38 @@ const addPlayer = (() => {
     _createPlayerCard(player2, "Player 2: ");
   };
 
+  const displayTurnDiv = document.getElementById("displayTurn")
+  const displayTurnCard = document.getElementById("displayTurnCard")
+  const displayTurn = () => {
+    let turn = "";
+    if (gameFlow.checkTurn() % 2 === 0) {
+        turn = "O";
+      } else {
+        turn = "X";
+      }
+      //if players exist then use names
+      //if no players just use symbol
+
+      if (turn === "X") {
+          if (player1.mark === "X") {
+            displayTurnDiv.textContent = player1.name + "'s turn";
+           }
+           else {
+            displayTurnDiv.textContent = player2.name + "'s turn";
+           }
+      }
+      if (turn === "O") {
+        if (player1.mark === "O") {
+            displayTurnDiv.textContent = player1.name + "'s turn";
+           }
+           else {
+            displayTurnDiv.textContent = player2.name + "'s turn";
+           }
+      }
+      
+  }
+
+  displayTurn();
   const newPlayersButton = document.getElementById("newPlayers");
   newPlayersButton.addEventListener("click", _newPlayers);
 
@@ -222,4 +264,8 @@ const addPlayer = (() => {
   changePositionButton.addEventListener("click", changePosition);
 
   nameInput.value = "";
+
+  return {
+      displayTurn,
+  }
 })();
