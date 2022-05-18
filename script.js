@@ -36,6 +36,7 @@ const gameboard = (() => {
     for (i = 0; i < 9; i++) {
       gameboardArray[i].status = "empty";
     }
+    gameTie = "yes";
     _createGameboard();
     return;
   };
@@ -62,8 +63,7 @@ const gameboard = (() => {
   };
 
   
-  
-  let gameTie = "";
+let gameTie = "yes";
 
   const checkGameStatus = (s1, s2, s3) => {
     //Parameters are the characters of square 1, 2, and 3, respectively.
@@ -74,10 +74,8 @@ const gameboard = (() => {
     if (mark1 === "empty" || mark2 === "empty" || mark3 === "empty") {
       return;
     } else if (mark1 === mark2 && mark2 === mark3) {
-        //add win
-      console.log(`${mark1} wins!`);
       addPlayer.displayWin(mark1);
-
+        gameTie = "no";
       for (i = 0; i < 9; i++) {
         if ((gameboardArray[i].status = "empty")) {
           gameboardArray[i].status = i;
@@ -97,15 +95,13 @@ const gameboard = (() => {
     checkGameStatus(3, 4, 5);
     checkGameStatus(2, 5, 8);
     checkGameStatus(6, 7, 8);
-    if (gameFlow.checkTurnNine() === "nine") {
+    if (gameFlow.checkTurnNine() === "nine" && gameTie === "yes") {
       console.log("tie");
       addPlayer.displayWin('tie');
     }
   };
-  const checkTie = () => {
-      return gameTie;
-  }
-  return { render, markSpace, clearGameboard , checkGameStatus , checkTie};
+
+  return { render, markSpace, clearGameboard , checkGameStatus ,};
 })();
 
 gameboard.render();
@@ -205,13 +201,14 @@ const addPlayer = (() => {
   function _createPlayerCard(player, string) {
      
     let playerCard = document.createElement("div");
+    playerCard.classList.add('card');
     playerDiv.appendChild(playerCard);
     let playerName = document.createElement("p");
     playerName.textContent = string + player.name;
     let playerMark = document.createElement("p");
     playerMark.textContent = "Playing as " + player.mark;
     let playerWins = document.createElement("p");
-    playerWins.textContent = player.wins;
+    playerWins.textContent = player.wins + " wins";
 
     playerCard.appendChild(playerName);
     playerCard.appendChild(playerMark);
